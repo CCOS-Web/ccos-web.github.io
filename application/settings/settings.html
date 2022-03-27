@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" class="no-ie" style="overflow:hidden;">
+	<head>
+		<meta charset="utf-8">
+		<title>Settings</title>
+	</head>
+	<style>
+		.table {
+			min-height: 95vh;
+			max-height: 95vh;
+			min-width: 25vw;
+			max-width: 25vw;
+			background-color: rgba(230, 230, 230, 0.5);
+			margin: 0px;
+			float: left
+		}
+
+		.list {
+			border-radius: 7px;
+			background-color: rgba(0, 130, 22, 0.3);
+			font-size: 5vh;
+			min-width: 25vw;
+			min-height: 10vh;
+			max-width: 25vw;
+			max-height: 10vh;
+			vertical-align: middle;
+			text-align: center;
+			margin: 0px;
+		}
+		.centre{
+			vertical-align: middle;
+			text-align: center;
+			margin: 0px;
+		}
+	</style>
+	<script>
+		function inner(s) {
+			item = document.getElementById("main");
+			item.innerHTML = s;
+		}
+	</script>
+	<body style="margin: 0px;background-image: url(../../../desktop/bg.png);" id="body">
+		<div style="min-height: 5vh;max-height: 5vh;min-width: 100vw;background-color: rgba(0,120,215,1);">
+			<div class="centre" style="font-size: 3vh;color: #FFFFFF;" onclick="javascript:self.close();">Settings</div>
+		</div>
+		<div class="table">
+			<div class="list" id="desktop">Desktop</div>
+			<div class="list" onclick="inner('<font size=\'5vh\'>Hi,I\'m H.G.Cucumber. <br>Call me Cucumber everytime,<br> so that I can answer you on the desktop.</font>');">Hi</div>
+			<div class="list" id="fb">FeedBack</div>
+		</div>
+		<div id="main"style="margin: 0px;float: right;min-height: 95vh;max-height: 95vh;min-width: 75vw;max-width: 75vw;background-color: rgba(230,230,230,1);">
+		</div>
+	</body>
+	<script>
+	var HttpClient = function() {
+	    this.get = function(aUrl, aCallback) {
+	        var anHttpRequest = new XMLHttpRequest();
+	        anHttpRequest.onreadystatechange = function() { 
+	            if (anHttpRequest.readyState == 4 && anHttpRequest.status == 200)
+	                aCallback(anHttpRequest.responseText);
+	        }
+	 
+	        anHttpRequest.open( "GET", aUrl, true );            
+	        anHttpRequest.send( null );
+	    }
+	}
+	document.getElementById("fb").onclick=function(){
+		inner("E-mail address: <input id='em'><br>FeedBack: <input id='f'><br><button id='sub'>Submit</button>");
+		document.getElementById("sub").onclick=function(){
+			var client = new HttpClient();
+			client.get('https://sctapi.ftqq.com/SCT119256T0o7pi2FlHtYEBaZDkxIRzHfB.send?title=CCOS - FeedBack&desp='+document.getElementById("f").value+':::::::::::from:'+document.getElementById("em").value, function(response) {
+				// do something with response
+				inner("<font size=10>We get your FeedBack!</font>")
+			});
+		}
+	}
+	document.getElementById("desktop").onclick=function(){
+		inner("New background Path: <input id=\'NewBgPath\' placeholder=\'New bg Path\'><button id=\'SubmitNewBG\'>Submit</button><br>")
+		document.getElementById("SubmitNewBG").onclick=function(){
+			document.getElementById("body").style.backgroundImage="url('"+document.getElementById("NewBgPath").value+"')";
+		}
+	}
+	</script>
+</html>

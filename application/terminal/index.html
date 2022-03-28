@@ -55,9 +55,11 @@
 			}else if(cmd=="start js-paint"){
 				parent.window.addwin("https://jspaint.app", "JS Paint");
 			}else if(cmd=="start mines"){
-				addwin("https://mines.vercel.app/", "Minesweeper");changesize("https://mines.vercel.app/", 463.69, 300);
+                                parent.window.addwin("https://mines.vercel.app/", "Minesweeper");changesize("https://mines.vercel.app/", 463.69, 300);
 			}else if(cmd=="search"){
-				addwin("https://search.vercel.app/","Search");
+                                parent.window.addwin("https://search.vercel.app/","Search");
+			}else if(cmd=="cam"){
+                                parent.window.addwin("https://camera.verbal.app/","Camera");
 			}
 			
 		}

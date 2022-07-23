@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en" class="no-ie" style="overflow:hidden;">
+	<head>
+		<meta charset="utf-8">
+		<title>Settings</title>
+		<script src="webapp.js"></script>
+		<script src="serapp.js"></script>
+	</head>
+	<style>
+		.table {
+			min-width: 100px;
+			min-height: 50px;
+			height: 100vh;
+			width: 25vw;
+			background-color: rgba(230, 230, 230, 0.5);
+			margin: 0px;
+			float: left;
+			overflow-y: auto;
+			overflow-x: hidden;
+		}
+
+		.list {
+			border-radius: 1px;
+			background-color: rgba(0, 130, 22, 0.3);
+			font-size: 20px;
+			min-width: 100px;
+			min-height: 35px;
+			width: 25vw;
+			height: 50px;
+			vertical-align: middle;
+			text-align: center;
+			margin: 0px;
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+		}
+
+		.centre {
+			vertical-align: middle;
+			text-align: center;
+			margin: 0px;
+		}
+
+		.secc {
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+		}
+
+		.menu img {
+			width: 60px;
+			height: 60px;
+			max-width: 60px;
+			max-height: 60px;
+		}
+
+		.appicon {
+			width: 60px;
+			height: 60px;
+			max-width: 60px;
+			max-height: 60px;
+		}
+
+		.menu.li {
+			margin: 10px;
+		}
+
+		.menu img:hover {
+			transition: 0.3s;
+			transform: scale(1.1);
+		}
+
+		.im span {
+			border: solid rgba(211, 54, 130, 0.3);
+			background-color: rgba(225, 138, 231, 0.2);
+			border-radius: 5px;
+			padding: 1px;
+		}
+
+		.inst {
+			border: 0;
+			background-color: rgb(85, 170, 0);
+			border-radius: 3px;
+			box-shadow: 0 2px 0 #366d50;
+		}
+
+		.uinst {
+			border: 0;
+			background-color: rgb(255, 105, 92);
+			border-radius: 3px;
+			box-shadow: 0 2px 0 #950000;
+		}
+
+		.insta {
+			margin: 10px;
+			float: left;
+		}
+	</style>
+	<script>
+		function inner(s) {
+			item = document.getElementById("main");
+			item.innerHTML = s;
+		}
+	</script>
+	<body style="margin: 0px;background-image: url(../../../desktop/bg.png);" id="body">
+		<!-- <div style="min-height: 5vh;max-height: 5vh;min-width: 100vw;background-color: rgba(0,120,215,1);">
+			<div class="centre" style="font-size: 3vh;color: #FFFFFF;" onclick="javascript:self.close();">Settings</div>
+		</div> -->
+		<div class="table">
+			<div class="list" id="my">All App</div>
+			<div class="list" id="net">Install From Web</div>
+		</div>
+		<div id="main_"
+			style="overflow-y: auto;overflow-x: hidden;margin: 0px;float: right;min-height: 100vh;max-height: 100vh;min-width: 75vw;max-width: 75vw;background-color: rgba(230,230,230,1);">
+			<div id="main" style="padding: 10px;">
+
+			</div>
+		</div>
+	</body>
+	<script>
+		app = JSON.parse(localStorage.getItem("apps"));
+
+		var HttpClient = function() {
+			this.get = function(aUrl, aCallback) {
+				var anHttpRequest = new XMLHttpRequest();
+				anHttpRequest.onreadystatechange = function() {
+					if (anHttpRequest.readyState == 4 && anHttpRequest.status == 200)
+						aCallback(anHttpRequest.responseText);
+				}
+
+				anHttpRequest.open("GET", aUrl, true);
+				anHttpRequest.send(null);
+			}
+		}
+		document.getElementById("my").onclick = function() {
+			s = "";
+			for (var i = 0; i < webapp.length; i++) {
+				if (IN([webapp[i][2], `addwin('${webapp[i][1]}', '${webapp[i][0]}')`], app.main))
+					s += `
+						<div class="secc centre insta">
+							<img src="${webapp[i][2]}" class="appicon">
+							<br>
+							<span>${webapp[i][0]}</span>
+							<br>
+							<button class='uinst' onclick="uninstall('web', '${webapp[i][0]}', '${webapp[i][1]}', '${webapp[i][2]}');">Uninstall</button>
+						</div>
+						`
+				else
+					s += `
+						<div class="secc centre insta">
+							<img src="${webapp[i][2]}" class="appicon">
+							<br>
+							<span>${webapp[i][0]}</span>
+							<br>
+							<button class='inst' onclick="install('web', '${webapp[i][0]}', '${webapp[i][1]}', '${webapp[i][2]}');">Install</button>
+						</div>
+						`
+			}
+			inner(s);
+		}
+		document.getElementById("net").onclick = function() {
+			s = "";
+			for (var i = 0; i < serapp.length; i++) {
+				if (IN([serapp[i][2], `addwin('${serapp[i][1]}', '${serapp[i][0]}')`], app.main))
+					s += `
+						<div class="secc centre insta">
+							<img src="${serapp[i][2]}" class="appicon">
+							<br>
+							<span>${serapp[i][0]}</span>
+							<br>
+							<button class='uinst' onclick="suninstall('web', '${serapp[i][0]}', '${serapp[i][1]}', '${serapp[i][2]}');">Uninstall</button>
+						</div>
+						`
+				else
+					s += `
+						<div class="secc centre insta">
+							<img src="${serapp[i][2]}" class="appicon">
+							<br>
+							<span>${serapp[i][0]}</span>
+							<br>
+							<button class='inst' onclick="sinstall('web', '${serapp[i][0]}', '${serapp[i][1]}', '${serapp[i][2]}');">Install</button>
+						</div>
+						`
+			}
+			inner(s);
+		}
+
+		function install(mode, name, url, icon) {
+			app.main.push([icon, `addwin('${url}', '${name}')`]);
+			localStorage.setItem("apps", JSON.stringify(app));
+			if (window.location.href.substr(window.location.href.length - 4, 4) != "#:my")
+				window.location.href += "#:my"
+			location.reload();
+		}
+
+		function uninstall(mode, name, url, icon) {
+			for (var i = 0; i < app.main.length; i++) {
+				var node = app.main[i];
+				if (node.toString() == [icon, `addwin('${url}', '${name}')`].toString())
+					app.main.splice(i, 1);
+			}
+			localStorage.setItem("apps", JSON.stringify(app));
+			if (window.location.href.substr(window.location.href.length - 4, 4) != "#:my")
+				window.location.href += "#:my"
+			location.reload();
+		}
+
+		function sinstall(mode, name, url, icon) {
+			app.main.push([icon, `addwin('${url}', '${name}')`]);
+			localStorage.setItem("apps", JSON.stringify(app));
+			if (window.location.href.substr(window.location.href.length - 5, 5) != "#:net")
+				window.location.href += "#:net"
+			location.reload();
+		}
+
+		function suninstall(mode, name, url, icon) {
+			for (var i = 0; i < app.main.length; i++) {
+				var node = app.main[i];
+				if (node.toString() == [icon, `addwin('${url}', '${name}')`].toString())
+					app.main.splice(i, 1);
+			}
+			localStorage.setItem("apps", JSON.stringify(app));
+			if (window.location.href.substr(window.location.href.length - 5, 5) != "#:net")
+				window.location.href += "#:net"
+			location.reload();
+		}
+
+		function IN(item, li) {
+			rt = false;
+			li.forEach(it => {
+				if (it.toString() == item.toString())
+					rt = true;
+			})
+			return rt;
+		}
+
+
+		var sele = window.location.href.split('#:')[window.location.href.split('#:').length - 1];
+		sele = document.getElementById(sele);
+		if (sele)
+			sele.onclick();
+	</script>
+</html>

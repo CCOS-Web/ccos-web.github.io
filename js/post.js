@@ -35,6 +35,10 @@ async function serverCheck() {
 	return await wait();
 }
 
+function jsonp(url, func){
+	$(`<script src='${url}&re=${func}'>`).appendTo($("body"));
+}
+
 function serverWrite(name, msg, func){
 	var client = new HttpClient();
 	client.get(`${localStorage.getItem("serverIp")}/main.php?o=w&n=${encodeURI(name)}&m=${encodeURI(msg)}`, function(response) {

@@ -110,7 +110,7 @@ function addwin(url, title) {
 	bd1.style.bottom = "-7px";
 	bd1.style.cursor = "s-resize";
 	document.addEventListener("mousedown", function(event) {
-		activeBorder=1;
+		activeBorder = 1;
 		activeBorder_divx = event.clientX;
 		activeBorder_divy = event.clientY;
 		activeBorderEvent = event;
@@ -120,24 +120,25 @@ function addwin(url, title) {
 	})
 	document.addEventListener("mousemove", function(event) {
 		if (activeBorder) {
-			var id=activeBorderEvent.path[0].id.substring(4, activeBorderEvent.path[0].id.length)
-			var idt=Number(activeBorderEvent.path[0].id.substring(2, 3));
+			var id = activeBorderEvent.path[0].id.substring(4, activeBorderEvent.path[0].id.length)
+			var idt = Number(activeBorderEvent.path[0].id.substring(2, 3));
 			// console.log(idt)
 			nowh = document.getElementById("title_" + id + "_app").style.height.trim();
 			nowh = Number(nowh.substring(0, nowh.length - 2));
 			noww = document.getElementById("title_" + id + "_app").style.width.trim();
 			noww = Number(noww.substring(0, noww.length - 2));
-			switch(idt){
+			switch (idt) {
 				case 1:
-					changesize(id, nowh+event.clientY-activeBorder_divy, noww)
+					changesize(id, nowh + event.clientY - activeBorder_divy, noww)
 					activeBorder_divy = event.clientY;
 					break;
 				case 2:
-					changesize(id, nowh, noww+event.clientX-activeBorder_divx)
+					changesize(id, nowh, noww + event.clientX - activeBorder_divx)
 					activeBorder_divx = event.clientX;
 					break;
 				case 3:
-					changesize(id, nowh+event.clientY-activeBorder_divy, noww+event.clientX-activeBorder_divx)
+					changesize(id, nowh + event.clientY - activeBorder_divy, noww + event.clientX -
+						activeBorder_divx)
 					activeBorder_divx = event.clientX;
 					activeBorder_divy = event.clientY;
 					break;
@@ -160,10 +161,10 @@ function addwin(url, title) {
 	bd3.style.bottom = "-7px";
 	bd3.style.position = "absolute";
 	bd3.style.cursor = "nw-resize";
-	
-	bd1.id="bd1_"+url;
-	bd2.id="bd2_"+url;
-	bd3.id="bd3_"+url;
+
+	bd1.id = "bd1_" + url;
+	bd2.id = "bd2_" + url;
+	bd3.id = "bd3_" + url;
 
 
 	item.appendChild(i2);
@@ -180,10 +181,8 @@ function closewin(id) {
 		// console.log("none")
 		return 0;
 	}
-	var winfram = document.getElementById(id + "_app");
-	winfram.style.display = "none";
+	$(document.getElementById(id + "_app")).remove();
 	activeapp.splice(activeapp.indexOf(id), 1);
-	closeSet.add(id);
 	nowid = activeapp[activeapp.length - 1];
 }
 

@@ -91,7 +91,7 @@
 			menu = localStorage.getItem("menu");
 			if (!menu) {
 				menu =
-					`{"main": [["icon/settings.png", "addwin('application/settings/settings.html', 'Settings')"],["icon/terminal.png", "addwin('application/terminal/index.html', 'Terminal')"]]}`;
+					`{"main": [["icon/settings.png", "addwin('application/settings/settings.html', 'Settings')"],["icon/terminal.png", "addwin('application/terminal/index.html', 'Terminal')"],["icon/store.png", "addwin('application/store/store.html', 'Store')"]]}`;
 				localStorage.setItem("menu", menu);
 			}
 			setMenu();
@@ -101,6 +101,13 @@
 				apps =
 					`{"main": []}`;
 				localStorage.setItem("apps", apps);
+			}
+			
+			desk = localStorage.getItem("desk");
+			if (!desk) {
+				desk =
+					`{"main": []}`;
+				localStorage.setItem("desk", desk);
 			}
 		}
 
@@ -175,6 +182,7 @@
 			setInterval("time()", 1000);
 		</script>
 	</body>
+	<script src="js/jquery.min.js"></script>
 	<script src="js/desktop.js"></script>
 	<script src="js/system.js"></script>
 	<script src="js/post.js"></script>

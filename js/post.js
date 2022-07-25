@@ -34,3 +34,34 @@ async function serverCheck() {
 	}
 	return await wait();
 }
+
+function serverWrite(name, msg, func){
+	var client = new HttpClient();
+	client.get(`${localStorage.getItem("serverIp")}/main.php?o=w&n=${encodeURI(name)}&m=${encodeURI(msg)}`, function(response) {
+		console.log("Write successfully");
+		if(func)
+			func(response);
+	});	
+}
+
+function serverRead(name, func){
+	var client = new HttpClient();
+	client.get(`${localStorage.getItem("serverIp")}/main.php?o=r&n=${encodeURI(name)}`, function(response) {
+		func(decodeURI(response));
+	});	
+}
+
+function serverClear(name, func){
+	var client = new HttpClient();
+	client.get(`${localStorage.getItem("serverIp")}/main.php?o=d&n=${encodeURI(name)}`, function(response) {
+		if(func)
+			func(true);
+	});	
+}
+
+function getPHP(name, func){
+	var client = new HttpClient();
+	client.get(name, function(response) {
+		func(response);
+	});	
+}

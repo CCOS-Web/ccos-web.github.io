@@ -1,8 +1,6 @@
 var webapp=[
 	["name", "url", "icon"],
-	["Chat", "url", "../etc/icon/chat.png"],
-	["bbbb", "url", "icon"],
-	["aaaa", "url", "icon"],
+	["Chat", "application/etc/code/chat.html", "../etc/icon/chat.png"],
 ]
 
 webapp.sort(function(l1,l2){

@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<title>Settings</title>
 		<script src="webapp.js"></script>
-		<script src="serapp.js"></script>
+		<script src="../../js/post.js"></script>
 	</head>
 	<style>
 		.table {
@@ -99,6 +99,22 @@
 			margin: 10px;
 			float: left;
 		}
+
+		.adto {
+			position: absolute;
+			display: none;
+			width: 7ch;
+			text-align: center;
+			padding: 1ch;
+			background-color: #b8d0d2;
+			font-size: 1ch;
+			border-radius: 3px;
+		}
+		
+		hr{
+			color: white;
+			border: 0.5px solid white;
+		}
 	</style>
 	<script>
 		function inner(s) {
@@ -112,7 +128,7 @@
 		</div> -->
 		<div class="table">
 			<div class="list" id="my">All App</div>
-			<div class="list" id="net">Install From Web</div>
+			<div class="list" id="net">Install</div>
 		</div>
 		<div id="main_"
 			style="overflow-y: auto;overflow-x: hidden;margin: 0px;float: right;min-height: 100vh;max-height: 100vh;min-width: 75vw;max-width: 75vw;background-color: rgba(230,230,230,1);">
@@ -123,6 +139,9 @@
 	</body>
 	<script>
 		app = JSON.parse(localStorage.getItem("apps"));
+		ins_menu = JSON.parse(localStorage.getItem("menu"));
+		ins_desk = JSON.parse(localStorage.getItem("desk"));
+		addTo = null;
 
 		var HttpClient = function() {
 			this.get = function(aUrl, aCallback) {
@@ -137,6 +156,29 @@
 			}
 		}
 		document.getElementById("my").onclick = function() {
+			s = `<div id='adto' class='adto' onmouseleave="adtoh(this)">
+			<div id='adto1' onclick='addmenu()'>MENU</div>
+			<hr>
+			<div id='adto2' onclick='addtop()'>Desktop</div>
+			</div>`;
+			for (var i = 0; i < webapp.length; i++) {
+				if (IN([webapp[i][2], `addwin('${webapp[i][1]}', '${webapp[i][0]}')`], app.main))
+					s += `
+						<div class="secc centre insta">
+							<img src="${webapp[i][2]}" class="appicon">
+							<br>
+							<span>${webapp[i][0]}</span>
+							<br>
+							<button class='uinst' onclick="uninstall('web', '${webapp[i][0]}', '${webapp[i][1]}', '${webapp[i][2]}');">Uninstall</button>
+							<button class='adtob' onmouseenter="adto(this);">Add to...</button>
+							<div Style='display: none;'>${webapp[i]}</div>
+						</div>
+						`
+			}
+			inner(s);
+		}
+
+		document.getElementById("net").onclick = function() {
 			s = "";
 			for (var i = 0; i < webapp.length; i++) {
 				if (IN([webapp[i][2], `addwin('${webapp[i][1]}', '${webapp[i][0]}')`], app.main))
@@ -162,38 +204,12 @@
 			}
 			inner(s);
 		}
-		document.getElementById("net").onclick = function() {
-			s = "";
-			for (var i = 0; i < serapp.length; i++) {
-				if (IN([serapp[i][2], `addwin('${serapp[i][1]}', '${serapp[i][0]}')`], app.main))
-					s += `
-						<div class="secc centre insta">
-							<img src="${serapp[i][2]}" class="appicon">
-							<br>
-							<span>${serapp[i][0]}</span>
-							<br>
-							<button class='uinst' onclick="suninstall('web', '${serapp[i][0]}', '${serapp[i][1]}', '${serapp[i][2]}');">Uninstall</button>
-						</div>
-						`
-				else
-					s += `
-						<div class="secc centre insta">
-							<img src="${serapp[i][2]}" class="appicon">
-							<br>
-							<span>${serapp[i][0]}</span>
-							<br>
-							<button class='inst' onclick="sinstall('web', '${serapp[i][0]}', '${serapp[i][1]}', '${serapp[i][2]}');">Install</button>
-						</div>
-						`
-			}
-			inner(s);
-		}
 
 		function install(mode, name, url, icon) {
 			app.main.push([icon, `addwin('${url}', '${name}')`]);
 			localStorage.setItem("apps", JSON.stringify(app));
-			if (window.location.href.substr(window.location.href.length - 4, 4) != "#:my")
-				window.location.href += "#:my"
+			if (window.location.href.substr(window.location.href.length - 4, 4) != "#:net")
+				window.location.href += "#:net"
 			location.reload();
 		}
 
@@ -203,28 +219,20 @@
 				if (node.toString() == [icon, `addwin('${url}', '${name}')`].toString())
 					app.main.splice(i, 1);
 			}
-			localStorage.setItem("apps", JSON.stringify(app));
-			if (window.location.href.substr(window.location.href.length - 4, 4) != "#:my")
-				window.location.href += "#:my"
-			location.reload();
-		}
-
-		function sinstall(mode, name, url, icon) {
-			app.main.push([icon, `addwin('${url}', '${name}')`]);
-			localStorage.setItem("apps", JSON.stringify(app));
-			if (window.location.href.substr(window.location.href.length - 5, 5) != "#:net")
-				window.location.href += "#:net"
-			location.reload();
-		}
-
-		function suninstall(mode, name, url, icon) {
-			for (var i = 0; i < app.main.length; i++) {
-				var node = app.main[i];
+			for (var i = 0; i < ins_menu.main.length; i++) {
+				var node = ins_menu.main[i];
+				if (node.toString() == [icon.replace("../", "application/"), `addwin('${url.replace("../", "application/")}', '${name}')`].toString())
+					ins_menu.main.splice(i, 1);
+			}
+			for (var i = 0; i < ins_desk.main.length; i++) {
+				var node = ins_desk.main[i];
 				if (node.toString() == [icon, `addwin('${url}', '${name}')`].toString())
-					app.main.splice(i, 1);
+					ins_desk.main.splice(i, 1);
 			}
 			localStorage.setItem("apps", JSON.stringify(app));
-			if (window.location.href.substr(window.location.href.length - 5, 5) != "#:net")
+			localStorage.setItem("menu", JSON.stringify(ins_menu));
+			localStorage.setItem("desk", JSON.stringify(ins_desk));
+			if (window.location.href.substr(window.location.href.length - 4, 4) != "#:net")
 				window.location.href += "#:net"
 			location.reload();
 		}
@@ -236,6 +244,49 @@
 					rt = true;
 			})
 			return rt;
+		}
+
+		function adto(t) {
+			var box = document.getElementById("adto");
+			var pos = t.getBoundingClientRect();
+			box.style.display = "block";
+			box.style.left = String(pos.left)+"px";
+			box.style.top = String(pos.top)+"px";
+			addTo=t;
+		}
+
+		function adtoh(t) {
+			addTo=null;
+			var box = document.getElementById("adto");
+			box.style.display = "none";
+		}
+		
+		function addmenu(){
+			var lst=addTo.parentElement.lastElementChild.innerText.split(',');
+			// lst[name, url, icon]
+			if(lst[2].substr(0, 3)=='../')
+				lst[2]=lst[2].replace("../", "application/");
+			if(lst[1].substr(0, 3)=='../')
+				lst[1]=lst[1].replace("../", "application/");
+			men=localStorage.getItem("menu");
+			men = JSON.parse(men);
+			console.log([lst[2],lst[1]])
+			men.main.push([lst[2],`addwin('${lst[1]}', '${lst[0]}')`]);
+			localStorage.setItem("menu", JSON.stringify(men));
+		}
+		
+		function addtop(){
+			var lst=addTo.parentElement.lastElementChild.innerText.split(',');
+			// lst[name, url, icon]
+			if(lst[2].substr(0, 3)=='../')
+				lst[2]=lst[2].replace("../", "application/");
+			if(lst[1].substr(0, 3)=='../')
+				lst[1]=lst[1].replace("../", "application/");
+			desk=localStorage.getItem("desk");
+			desk = JSON.parse(desk);
+			console.log([lst[2],lst[1]])
+			desk.main.push([lst[2], `addwin('${lst[1]}', '${lst[0]}')`]);
+			localStorage.setItem("desk", JSON.stringify(desk));
 		}
 
 

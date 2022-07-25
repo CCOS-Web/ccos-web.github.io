@@ -22,7 +22,7 @@ if($md=="r")
 	$f=fopen($file,"r") or exit("Error: Can's open the file!");
 	while(!feof($f))
 	{
-	    echo fgets($f). "\n";
+	    echo fgets($f);
 	}
 	fclose($f);
 }

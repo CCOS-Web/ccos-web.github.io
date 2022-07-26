@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>CCOS - Phone</title>
+	</head>
+	<body style="margin: 0;padding: 5px;background-color: #002B36;">
+		<style>
+			.menu {
+				width: calc(100vw - 10px);
+				height: 50px;
+				text-align: center;
+				line-height: 35px;
+				background-color: #b4b4b4;
+				border-radius: 5px;
+				--margin: 10px;
+				margin-top: var(--margin);
+				margin-bottom: var(--margin);
+			}
+			
+			iframe{
+				border: 0;
+				height: calc(100vh - 10px);
+				display: block;
+			}
+		</style>
+		<div class="menu" onclick="gotowin('application/etc/code/chat.html')">
+			Chat
+		</div>
+		<div class="menu" onclick="gotowin('application/settings/phone.html')">
+			Settings
+		</div>
+		<div class="menu">
+			menu3
+		</div>
+		<div id='if'></div>
+		<script>
+		function gotowin(url){
+			window.location.href=url;
+		}
+		</script>
+	</body>
+</html>

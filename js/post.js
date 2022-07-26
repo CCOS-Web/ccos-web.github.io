@@ -69,3 +69,9 @@ function getPHP(name, func){
 		func(response);
 	});	
 }
+
+function serverDownload(url, name){
+	serverPost(`/download.php?n=${name}&u=${url}`, function(){
+		console.log(`Download ${name}, successfully.`);
+	});
+}

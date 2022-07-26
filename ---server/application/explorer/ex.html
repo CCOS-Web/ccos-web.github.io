@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh" style="overflow: hidden;">
+
+<head>
+	<title>Explorer</title>
+	<style>
+	.centre{
+		vertical-align: middle;
+		text-align: center;
+		margin: 0px;
+	}
+	</style>
+</head>
+
+<body style="margin: 0px;">
+	<div style="min-height: 5vh;max-height: 5vh;min-width: 100vw;background-color: rgba(0, 98, 0, 0.5);">
+		<div class="centre" style="font-size: 3vh;color: #FFFFFF;" onclick="javascript:self.close();">Explorer</div>
+	</div>
+	Disk: <input id="disk" placeholder="Disk" style="height: 2vh;">
+	<button onclick="window.history.go(-1)">Back</button>
+	<button onclick="window.history.go(1)">Front</button>
+	<div id="d">
+		<iframe src="G:/" style="height: 90vh;width: 100vw;" id="if"></iframe>
+		<div style="margin: 10px;"></div>
+	</div>
+	<script>
+	document.getElementById("disk").onchange = function(){
+		var url=document.getElementById("disk").value.replace(" ",'')[0]+":/";
+		document.getElementById("d").innerHTML="<iframe src='"+url+"' style=\"height: 90vh;width: 100vw;\" id=\"if\"></iframe>"
+		document.getElementById("disk").placeholder=document.getElementById("disk").value.toUpperCase();
+		document.getElementById("disk").value="";
+	}
+	
+	droptarget=document.getElementById("de");
+	droptarget.addEventListener('dragenter', ist , false);
+	
+	function ist(event){
+		var dataTransfer = event.dataTransfer;
+		var text = dataTransfer.getData("text");
+		alert(text)
+		//window.location.href="start G:\ccplay-installer "+path;
+	}
+	</script>
+</body>
+</html>

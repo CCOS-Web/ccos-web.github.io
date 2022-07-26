@@ -205,11 +205,13 @@
 			inner(s);
 		}
 
-		function install(mode, name, url, icon, webURL) {
+		function install(mode, name, url, icon, web) {
 			app.main.push([icon, `addwin('${url}', '${name}')`]);
 			localStorage.setItem("apps", JSON.stringify(app));
-			var downloadPath="application/etc/code/"+web.split('/')[web.split('/')?web.split('/').length-1:(web.split('/').length-2+".html")];
-			serverDownload(webURL, downloadPath);
+			if(web){
+				var downloadPath=url;
+				serverDownload(web, downloadPath);
+			}
 			if (window.location.href.substr(window.location.href.length - 4, 4) != "#:net")
 				window.location.href += "#:net"
 			location.reload();

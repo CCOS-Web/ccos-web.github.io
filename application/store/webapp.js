@@ -1,5 +1,5 @@
 var webapp=[
-	["name", "url", "icon"],
+	["name", "url", "icon", "web url"],
 	["Chat", "application/etc/code/chat.html", "../etc/icon/chat.png"],
 ]
 

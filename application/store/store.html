@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Settings</title>
-		<script src="webapp.js"></script>
+		<script src="https://ccos-web.github.io/application/store/webapp.js"></script>
 		<script src="../../js/post.js"></script>
 	</head>
 	<style>
@@ -183,31 +183,33 @@
 			for (var i = 0; i < webapp.length; i++) {
 				if (IN([webapp[i][2], `addwin('${webapp[i][1]}', '${webapp[i][0]}')`], app.main))
 					s += `
-						<div class="secc centre insta">
+						<div class="secc centre insta" id="ins${i}">
 							<img src="${webapp[i][2]}" class="appicon">
 							<br>
 							<span>${webapp[i][0]}</span>
 							<br>
-							<button class='uinst' onclick="uninstall('web', '${webapp[i][0]}', '${webapp[i][1]}', '${webapp[i][2]}');">Uninstall</button>
+							<button class='uinst' onclick="uninstall('web', '${webapp[i][0]}', '${webapp[i][1]}', '${webapp[i][2]}', '${webapp[i][3]}');">Uninstall</button>
 						</div>
 						`
 				else
 					s += `
-						<div class="secc centre insta">
+						<div class="secc centre insta" id="ins${i}">
 							<img src="${webapp[i][2]}" class="appicon">
 							<br>
 							<span>${webapp[i][0]}</span>
 							<br>
-							<button class='inst' onclick="install('web', '${webapp[i][0]}', '${webapp[i][1]}', '${webapp[i][2]}');">Install</button>
+							<button class='inst' onclick="install('web', '${webapp[i][0]}', '${webapp[i][1]}', '${webapp[i][2]}', '${webapp[i][3]}');">Install</button>
 						</div>
 						`
 			}
 			inner(s);
 		}
 
-		function install(mode, name, url, icon) {
+		function install(mode, name, url, icon, web) {
 			app.main.push([icon, `addwin('${url}', '${name}')`]);
 			localStorage.setItem("apps", JSON.stringify(app));
+			var msg="";
+			serverWrite("application/etc/code/"+web.split('/')[web.split('/')?web.split('/').length-1:(web.split('/').length-2+".html")], msg)
 			if (window.location.href.substr(window.location.href.length - 4, 4) != "#:net")
 				window.location.href += "#:net"
 			location.reload();

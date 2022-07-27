@@ -2,6 +2,7 @@ var webapp=[
 	["name", "url", "icon", "web url"],
 	["Chat", "application/etc/code/chat.html", "../etc/icon/chat.png"],
 	["CucumberCan", "application/etc/code/ccan.html", "", "https://cucumbercan.github.io/index.html"],
+	["Paint", "https://jspaint.app", "https://jspaint.app/favicon.ico"],
 ]
 
 webapp.sort(function(l1,l2){

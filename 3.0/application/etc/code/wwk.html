@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>WereWolf 🐺 Kill</title>
+	</head>
+	<script src="../../../js/post.js"></script>
+	<script src="../../../js/img.js"></script>
+	<script src="../../../js/jquery.min.js"></script>
+	<style>
+		body {
+			height: 100vh;
+			margin: 0;
+			overflow: hidden;
+		}
+
+		button {
+			background-color: #70ADDD;
+			border: 0;
+			color: white;
+			border-radius: 5px;
+			padding-left: 10px;
+			padding-right: 10px;
+		}
+
+		span {
+			padding-left: 0.5ch;
+			padding-right: 0.5ch;
+			border: 0;
+			border-radius: 100px;
+		}
+
+		roles {
+			display: none;
+		}
+
+		.player {
+			width: 100px;
+			height: 100px;
+			text-align: center;
+			line-height: 100px;
+			vertical-align: middle;
+			border-radius: 10px;
+			margin: 10px;
+			display: inline-block;
+			transition: all .25s ease-in;
+		}
+
+		.player:hover {
+			transform: translateY(-8px);
+		}
+
+		.iplayer {
+			margin: 15px;
+			width: 70px;
+			height: 70px;
+			text-align: center;
+			line-height: 70px;
+			vertical-align: middle;
+			font-size: 50px;
+			font-weight: 1000;
+			background-color: ghostwhite;
+			border-radius: 70px;
+			float: left;
+		}
+
+		@keyframes dark {
+			from {
+				background-color: ghostwhite;
+			}
+
+			to {
+				background-color: dimgrey;
+			}
+		}
+
+		@keyframes light {
+			from {
+				background-color: dimgrey;
+			}
+
+			to {
+				background-color: ghostwhite;
+			}
+		}
+
+		@-webkit-keyframes dark {
+			from {
+				background-color: ghostwhite;
+			}
+
+			to {
+				background-color: dimgrey;
+			}
+		}
+
+		@-webkit-keyframes light {
+			from {
+				background-color: dimgrey;
+			}
+
+			to {
+				background-color: ghostwhite;
+			}
+		}
+
+		.moon {
+			transition: all 1s ease-in;
+			bottom: -100px;
+		}
+	</style>
+	<body>
+		<div id="main">
+			<div id="room1">
+				Room 1:
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;User : <text id="usern">
+					<script>
+						serverRead("wwk.ccdata", function(res) {
+							if (res.indexOf("Error") != -1) serverWrite("wwk.ccdata", "0\n", function() {
+								document.getElementById("usern").innrText = (res.split("\n").length - 1);
+								for (var i = 0; i < (res.split("\n").length - 1); i++) document.getElementById("room1")
+									.innerHTML += '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + res.split(
+										'\n')[i].substring(1, res.split('\n')[i].length)
+							});
+							document.getElementById("usern").innrText = (res.split("\n").length - 1);
+							for (var i = 0; i < (res.split("\n").length - 1); i++) document.getElementById("room1").innerHTML +=
+								'<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + res.split('\n')[i].substring(1, res
+									.split('\n')[i].length)
+						})
+					</script>
+				</text>
+			</div>
+			&nbsp;&nbsp;&nbsp;&nbsp;<button id="joinbtn"
+				onclick='serverWrite("wwk.ccdata", "0"+localStorage.uname+"\n", function(){serverRead("wwk.ccdata", function(res){join(res.split("\n").length-1);})});'>JOIN</button>
+			<input type="button" onclick="serverClear('wwk.ccdata');serverClear('wwk-color.ccdata');"
+				value="clear room">
+		</div>
+		<script>
+			SELF_ALIFE=true;
+			died = [];
+			tmpDied = new Set();
+
+			Array.prototype.remove = function(val) {
+				var index = this.indexOf(val);
+				if (index > -1) {
+					this.splice(index, 1);
+				}
+			};
+
+
+			var started = 0;
+			var snum = 0;
+			var bgColor = `rgb(${String(random(0,256))},${String(random(0,256))},${String(random(0,256))})`;
+			var fontColor = oppesiteColor(bgColor);
+			wit = document.getElementById('s_witch');
+			pro = document.getElementById('s_pro');
+			left = 0;
+			plnum = 1;
+			SELF = '0';
+			var wolfnum=0;
+
+			function random(min, max) {
+				// random number in (min,max]
+				return Math.floor(Math.random() * (max - min)) + min;
+			}
+
+			function init(id) {
+				function vl(id) {
+					return Number(document.getElementById(id).innerText)
+				}
+				left = plnum - vl('o_wolf') - vl('o_witch') - vl('o_pro');
+				if (left < 0) {
+					document.getElementById(id).value = Number(document.getElementById(id).value) + left;
+					document.getElementById(id).onchange();
+				}
+			}
+
+			function join(num) {
+				snum = num;
+				adminConsole = "";
+
+				if (num == 1) {
+					serverClear("wwk-h.ccchat");
+					serverClear("wwk-w.ccchat");
+					serverClear("wwk-log.ccdata");
+					adminConsole = `
+					<p>
+					Player : <span id=o_pla>1</span>
+					</p>
+					<p>
+					Wolf : <span id=o_wolf>1</span>
+					<input id=s_wolf type=range min=1 max=3 onchange="document.getElementById('o'+this.id.substring(1,this.id.length)).innerText=this.value;init(this.id);">
+					</p>
+					<p>
+					Witch : <span id=o_witch>0</span>
+					<input id=s_witch type=range min=0 max=2 onchange="document.getElementById('o'+this.id.substring(1,this.id.length)).innerText=this.value;init(this.id);">
+					</p>
+					<p>
+					Prophet : <span id=o_pro>0</span>
+					<input id=s_pro type=range min=0 max=2 onchange="document.getElementById('o'+this.id.substring(1,this.id.length)).innerText=this.value;init(this.id);">
+					</p>
+					<p>
+					<input type=button onclick='play()' value='Play'>
+					</p>
+					<script>
+					setInterval(function(){
+						initleft();
+					},1000)
+					<\/script>
+					`;
+				}
+				send1("hi~ I'm [" + num + "]" + localStorage.uname + "!");
+				serverWrite("wwk-color.ccdata", bgColor + ' ' + fontColor + '\n');
+
+				document.getElementById("main").innerHTML = `
+					<div id="table" style="width: 50vw;height: 100vh;float: left;">${adminConsole}</div>
+					<div id="chat1" class="chat" style="width: 25vw;height: 100vh;float: left;">
+						<div id="msg1" class="msg"></div>
+						<div id="send1" class="send"><input  onchange="send1(this.value);this.value='';" placeholder="请输入消息聊天"><button>Send</button></div>
+					</div>
+					<div id="chat2" class="chat" style="width: 25vw;height: 100vh;float: left;">
+						<div id="msg2" class="msg"></div>
+						<div id="send2" class="send"><input  onchange="send2(this.value);this.value='';" placeholder="请输入消息聊天"><button>Send</button></div>
+					</div>
+					<style>
+						.chat{
+							overflow: hidden;
+						}
+						.msg{
+							width: 100%;
+							padding-right: 17px;
+							height: calc(100% - 20px);
+							overflow-y: scroll;
+							scrollbar-width: none;
+						}
+					</style>
+				`;
+				setInterval(function() {
+					serverRead("wwk-h.ccchat", function(res) {
+						if (document.getElementsByTagName("roles")[0] && started == 0) {
+							// <roles>11234</roles>
+							started = 1;
+							res = res.substring(res.indexOf("<roles>") + 7, res.length);
+							res = res.split('');
+							SELF = res[snum - 1];
+							roles = [null, 'Wolf', 'Witch', 'Prophet', 'Civilian']
+							displayAlert("error", "You are " + roles[Number(SELF)], 8000);
+							document.getElementById("msg2").innerHTML = "<h3>You are <b>" + roles[Number(SELF)] +
+								"</b></h3>";
+							send2("I'm wolf.");
+							wolfnum = document.getElementsByTagName("roles")[0].innerText.match(/1/g).length;
+							
+
+							function displayAlert(type, data, time) {
+
+								var lunbo = document.createElement("div");
+
+								if (type == "success") {
+									lunbo.style.backgroundColor = "#009900";
+								} else if (type == "error") {
+									lunbo.style.backgroundColor = "#990000";
+								} else if (type == "info") {
+									lunbo.style.backgroundColor = "#e6b800";
+								} else {
+									console.log("入参type错误");
+									return -1;
+								}
+
+								lunbo.id = "lunbo";
+								lunbo.style.position = "absolute";
+								lunbo.style.width = "200px";
+								lunbo.style.height = "60px";
+								lunbo.style.marginLeft = "-100px";
+								lunbo.style.marginTop = "-30px";
+								lunbo.style.left = "90%";
+								lunbo.style.top = "15%";
+								lunbo.style.color = "white";
+								lunbo.style.fontSize = "25px";
+								lunbo.style.borderRadius = "20px";
+								lunbo.style.textAlign = "center";
+								lunbo.style.lineHeight = "60px";
+
+								if (document.getElementById("lunbo") == null) {
+									document.body.appendChild(lunbo);
+									lunbo.innerHTML = data;
+									setTimeout(function() {
+										document.body.removeChild(lunbo);
+									}, time);
+								}
+							}
+							startGame();
+							return;
+						}
+						document.getElementById("msg1").innerHTML = res;
+					
+						function isDiedMsg(str){
+							return str.match(/<log>\(u[0-9][0-9]?\)\sDied\.<\/log>/g)
+						}
+						function diedOne(str){
+							return str.match(/u[0-9][0-9]?/g)[0];
+						}
+						function result(i, res){
+							return res.split("<hr>")[res.split("<hr>").length-1+i]
+						}
+					
+						if(result(-1, res).match(/<log>Prophet\sDone<\/log>/g))
+							light();
+					})
+					
+					serverRead("wwk-log.ccdata", function(res){
+						if(res.split('<br>')[res.split('<br>').length-2].match(/\(u[0-9][0-9]?\)\sDied/g)){
+							// the last log
+							var diedId = res.split('<br>')[res.split('<br>').length-2].match(/u[0-9][0-9]?/g)[0];
+							tmpDied.add(diedId);
+							if(SELF=='2'){
+								die(diedId);
+							}
+						}
+						if(res.split('<br>')[res.split('<br>').length-2].match(/SumUp: \(u[0-9]+\)(\(u[0-9]+\))* Died./g)){
+							// the last log is a sumup.
+							diedList=res.split('<br>')[res.split('<br>').length-2].match(/u[0-9]+/g);
+							diedList.forEach(id=>{
+								die(id);
+								died.push(id);
+							})
+							if(Number(id.substr(1,2))==snum){
+								SELF_ALIFE=false;
+							}
+						}
+					})
+					
+					var dom = document.getElementById("msg1");
+					var clientHeight = dom.clientHeight;
+					var scrollTop = dom.scrollTop;
+					var scrollHeight = dom.scrollHeight;
+					if (clientHeight + scrollTop - scrollHeight < 3) {
+						dom.scroll('y', scrollHeight + 1000);
+					}
+					serverRead("wwk-w.ccchat", function(res) {
+						if (SELF == '1')
+							document.getElementById("msg2").innerHTML = res;
+					})
+					var dom = document.getElementById("msg2");
+					var clientHeight = dom.clientHeight;
+					var scrollTop = dom.scrollTop;
+					var scrollHeight = dom.scrollHeight;
+					if (clientHeight + scrollTop - scrollHeight < 3) {
+						dom.scroll('y', scrollHeight + 1000);
+					}
+					serverRead("wwk.ccdata", function(res) {
+						plnum = res.split('\n').length - 1;
+						document.getElementById("o_pla").innerText = String(plnum);
+					})
+				}, 1000);
+			}
+
+			function send1(msg) {
+				msg = `<span style='background-color:${bgColor};color:${fontColor}'>${snum}</span>${localStorage.uname} :<br>` +
+					msg.replace(/<[^>]+>/g, "") + "<hr>";
+				if (darkness == 0)
+					serverWrite("wwk-h.ccchat", msg);
+				return msg;
+			}
+
+			function send2(msg) {
+				if (SELF == '1')
+					serverWrite("wwk-w.ccchat",
+						`<span style='background-color:${bgColor};color:${fontColor}'>${snum}</span>${localStorage.uname} :<br>` +
+						msg.replace(/<[^>]+>/g, "") + "<hr>");
+			}
+
+
+			function oppesiteColor(c) {
+				r = Number(c.substring(c.indexOf('(') + 1, c.indexOf(',')));
+				c = c.substring(c.indexOf(',') + 1, c.length);
+				g = Number(c.substring(0, c.indexOf(',')));
+				b = Number(c.substring(c.indexOf(',') + 1, c.indexOf(')')));
+				agv = String(255 - Math.floor((r + g + b) / 3));
+
+				return `rgb(${agv},${agv},${agv})`;
+			}
+
+			function play() {
+				wolf = Number(document.getElementById("s_wolf").value);
+				witch = Number(document.getElementById("s_witch").value);
+				pro = Number(document.getElementById("s_pro").value);
+				civ = plnum - wolf - witch - pro;
+
+				{
+					msg =
+						`<span style='background-color:rgb(0,0,0);color:rgb(255,255,255)'>GAME START</span><br>Wolf : ${wolf}<br>Witch : ${witch}<br>Prophet : ${pro}<br><hr>`;
+					serverWrite("wwk-h.ccchat", msg, function() {
+						msg = "<roles>";
+						pool = [];
+						for (var i = 0; i < wolf; i++)
+							pool.push('1');
+						for (var i = 0; i < witch; i++)
+							pool.push('2');
+						for (var i = 0; i < pro; i++)
+							pool.push('3');
+						for (var i = 0; i < civ; i++)
+							pool.push('4');
+						for (var i = 0; i < plnum; i++) {
+							n = random(0, pool.length);
+							msg += pool[n];
+							pool.remove(pool[n]);
+						}
+						msg += "</roles>"
+						serverWrite('wwk-h.ccchat', msg);
+					});
+				}
+
+			}
+
+			function startGame() {
+				var table = document.getElementById("table");
+				table.innerHTML = "";
+
+				serverRead("wwk-color.ccdata", function(res) {
+					res = res.split('\n');
+					for (var i = 1; i <= plnum; i++) {
+						icolor = res[i - 1].split(' ');
+						// "bgColor fontColor"
+						table.innerHTML +=
+							`<div id=u${i} class=player style='background-color:${icolor[0]}' onclick='dowith(this.id);'><div class=iplayer>${i}</div></div>`
+					}
+				})
+
+				dark();
+			}
+			var darkness = 0;
+
+			function dark() {
+				darkness = 1;
+				document.body.style.animation = "dark 5s";
+				setTimeout(function() {
+					document.body.style.backgroundColor = "dimgrey";
+				}, 4900);
+			}
+
+			function light() {
+				darkness = 0;
+				document.body.style.animation = "light 5s";
+				setTimeout(function() {
+					document.body.style.backgroundColor = "ghostwhite";
+				}, 4900);
+			}
+
+			function die(id) {
+				document.getElementById(id).style.filter = "brightness(30%)";
+			}
+
+			function relife(id) {
+				document.getElementById(id).style.filter = "brightness(100%)";
+			}
+
+			med_save = 1;
+			med_kill = 1;
+			
+			function adowith(id, unum){
+				if(darkness==1 && $("#msg1").html().split("<hr>")[$("#msg1").html().split("<hr>").length-1].indexOf("<log>")==-1){
+					if(snum!=unum || wolfnum==1){
+						serverWrite("wwk-log.ccdata", '(' + id + ') Died. Killed By Wolf.<br>', function(){
+							serverWrite("wwk-h.ccchat", "<log>Wolf Done</log><hr>")	
+						})
+					}
+				}
+			}
+
+			function dowith(id) {
+				switch (SELF) {
+					case '1': {
+						if(SELF_ALIFE){
+							if(darkness==1 && $("#msg1").html().split("<hr>")[$("#msg1").html().split("<hr>").length-1].indexOf("<log>")==-1)
+								serverWrite("wwk-w.ccchat",
+									`<span style='background-color:${bgColor};color:${fontColor}'>${snum}</span>${localStorage.uname} :<br>` +
+									"Killed (" + id + ") ?<br><button onclick='adowith(\"" + id + "\", " + snum +
+									")'>Agree</button>" + "<hr>");
+						}
+					}
+					case '2': {
+						if(SELF_ALIFE)
+							if(med_save + med_kill)
+								if(darkness==1 && $("#msg1").html().split("<hr>")[$("#msg1").html().split("<hr>").length-2].indexOf("<log>Wolf Done</log>")!=-1)
+								{
+									if (tmpDied.has(id) && med_save) {
+										// in list
+										serverWrite("wwk-log.ccdata", "(" + id + ") Relife. Saved By Witch.<br>SumUp: () Died.<br>", function(){
+											serverWrite("wwk-h.ccchat", "<log>Safety Night</log><hr>", function(){
+												serverWrite("wwk-h.ccchat", "<log>Witch Done</log><hr>")
+											})
+										});
+										serverWrite("wwk-log.ccdata", "(" + id + ") Relife. Saved By Witch.<br>");
+										relife(id);
+										tmpDied.clear();
+										med_save--;
+									} else if (med_kill) {
+										// get the wolf-killed one's id.
+										var diedID;for(x of tmpDied.values())diedID=x;
+										serverWrite("wwk-log.ccdata", "(" + id + ") Died. Killed By Witch.<br>SumUp: ("+diedID+")("+id+") Died.<br>", function(){
+											serverWrite("wwk-h.ccchat", "<log>Witch Done</log><hr>")
+										});
+										med_kill--;
+									} else {
+										serverWrite("wwk-h.ccchat", "<log>Witch Done</log><hr>");
+										var diedID;for(x of tmpDied.values())diedID=x;
+										serverWrite("wwk-log.ccdata", "SumUp: ("+diedID+") Died.");
+									}
+								}
+							else{
+								serverWrite("wwk-h.ccchat", "<log>Witch Done</log><hr>");
+								var diedID;for(x of tmpDied.values())diedID=x;
+								serverWrite("wwk-log.ccdata", "SumUp: ("+diedID+") Died.");
+							}
+						else{
+							serverWrite("wwk-h.ccchat", "<log>Witch Done</log><hr>");
+							var diedID;for(x of tmpDied.values())diedID=x;
+							serverWrite("wwk-log.ccdata", "SumUp: ("+diedID+") Died.");
+						}
+					}
+					case '3': {
+						if(SELF_ALIFE)
+							if(darkness==1 && $("#msg1").html().split("<hr>")[$("#msg1").html().split("<hr>").length-2].indexOf("<log>Witch Done</log>")!=-1)
+							{
+								document.getElementById("msg2").innerHTML = "<hr><h4>("+id+") is <b>" + roles[Number(document.getElementsByTagName("roles")[0].innerText[Number(id.substr(1,id.length-1))])] +
+									"</b></h4>";
+								serverWrite("wwk-h.ccchat", "<log>Prophet Done</log><hr>")
+								serverWrite("wwk-log.ccdata", "A Prophecy about ("+id+"), he/she is "+roles[Number(document.getElementsByTagName("roles")[0].innerText[Number(id.substr(1,id.length-1))])]+'<br>');
+							}
+						else{
+							serverWrite("wwk-h.ccchat", "<log>Prophet Done</log><hr>")
+						}
+					}
+				}
+			}
+			
+			function night(){
+				
+			}
+		</script>
+		<script>
+		window.onload=function(){
+			if(window.location.href.indexOf("autoJoin")!=-1)
+				document.getElementById("joinbtn").onclick();
+		}
+		</script>
+	</body>
+</html>

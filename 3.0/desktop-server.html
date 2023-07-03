@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" class="no-ie" style="overflow:hidden;">
+	<head>
+		<meta charset="utf-8" content="0width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>CCOS</title>
+		<script src="js/desktop.js"></script>
+		<script src="js/system.js"></script>
+		<script src="js/jquery.min.js"></script>
+		<script src="js/post.js"></script>
+		<script src="js/alt.js"></script>
+	</head>
+	<style>
+		ul,
+		input {
+			undefined margin: 0;
+			padding: 0;
+		}
+
+		#myMenu {
+			undefined list-style: none;
+			width: 150px;
+			border: 1px solid #ccc;
+			border-bottom: none;
+			position: absolute;
+			display: none;
+		}
+
+		#myMenu input {
+			undefined border-bottom: 1px solid #ccc;
+			cursor: pointer;
+		}
+
+		#myMenu input:hover {
+			undefined background-color: #ccc;
+		}
+
+		.centre {
+			vertical-align: middle;
+			text-align: center;
+			margin: 0px;
+		}
+
+		body {
+			background-image: url(./bg.png);
+			background-size: cover;
+		}
+
+		input {
+			margin: 10px;
+		}
+
+		input .menu {
+			margin: 5px;
+			border-radius: 5px;
+			max-width: 100px;
+			max-height: 100px;
+		}
+
+		.secc {
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+		}
+
+		@keyframes alertIn {
+			from {
+				right: -250px;
+			}
+
+			to {
+				right: 0px;
+			}
+		}
+
+		@keyframes alertOut {
+			from {
+				right: 0px;
+			}
+
+			to {
+				right: -250px;
+			}
+		}
+	</style>
+	<script>
+		window.onload = function() {
+			
+			localStorage.setItem("serverIp", "http://127.0.0.1:8000")
+		
+			menu = localStorage.getItem("menu");
+			if (!menu) {
+				menu =
+					`{"main": [["icon/settings.png", "addwin('application/settings/settings.html', 'Settings')"],["icon/terminal.png", "addwin('application/terminal/index.html', 'Terminal')"],["icon/store.png", "addwin('application/store/store.html', 'Store')"]]}`;
+				localStorage.setItem("menu", menu);
+			}
+			setMenu();
+			
+			apps = localStorage.getItem("apps");
+			if (!apps) {
+				apps =
+					`{"main": []}`;
+				localStorage.setItem("apps", apps);
+			}
+			
+			desk = localStorage.getItem("desk");
+			if (!desk) {
+				desk =
+					`{"main": []}`;
+				localStorage.setItem("desk", desk);
+			}
+			
+			un = localStorage.getItem("uname");
+			if (!un) {
+				un =
+					`CCUser`;
+				localStorage.setItem("uname", un);
+			}
+		}
+
+		function setMenu() {
+			let menu = localStorage.getItem("menu");
+			menu = JSON.parse(menu).main;
+			document.getElementById("myMenuRoot").innerHTML = "";
+			for (var i = 0; i < menu.length; i++) {
+				document.getElementById("myMenuRoot").innerHTML += `<input class="menu" type="image" src="` + menu[i][0] +
+					`" onclick="` + menu[i][1] + `" style="max-width: 60px;max-height: 60px;">`
+			}
+		}
+	</script>
+	<body style="width: 100vw;height: 100vh;" onkeydown="if (event.keyCode==46){closewin(nowid);}">
+		<script src="js/desktop.js"></script>
+		<div id="DIV">
+		</div>
+		<ul id="myMenu"
+			style="min-width: 280px;max-width: 280px;max-height: 290px;border-radius: 10px;background-color: rgba(3,166,25,0.5);">
+			<!-- MAIN DIV FOR START_MENU -->
+			<div id="myMenuRoot"></div>
+			<br><span id="time" style="color: rgb(200,200,200)"></span>
+		</ul>
+		<!-- 		<iframe src="../system/application/settings/settings.html" height="500px" width="1000px"></iframe>-->
+
+		<div id="root">
+			<!-- <script>addwin("application/F13/index.html", "F13");</script> -->
+			<!-- <script>addwin("application/settings/settings.html", "Settings")</script> -->
+			<!-- <script>addwin("https://mines.vercel.app/", "Minesweeper");changesize("https://mines.vercel.app/", 463.69, 300);</script> -->
+			<script>
+				serverCheck().then(res => {
+					console.log(res)
+					if (res) {
+
+					} else {
+						alt("rgba(250, 0, 0, 0.5)", "Cannot connect to the server, click me open the Settings.",
+							"start settings server");
+					}
+				});
+			</script>
+		</div>
+
+
+
+		<script>
+			var myMenu = document.getElementById("myMenu");
+			document.addEventListener("contextmenu", function(event) {
+				event.preventDefault();
+				myMenu.style.display = "block";
+				//获取鼠标视口位置
+				myMenu.style.top = event.clientY - 330 / 2 + "px";
+				myMenu.style.left = event.clientX - 330 / 2 + "px";
+			});
+
+			document.addEventListener("click", function(event) {
+				myMenu.style.display = "none";
+			});
+		</script>
+		<script type="text/javascript">
+			function time() {
+				var date = new Date() // 获得日期数据
+				var y = date.getFullYear(); // 年
+				var m = date.getMonth() + 1; // 月， 这里的月份必须要 + 1 才是当前月份
+				var d = date.getDate(); // 日， getDay是获得当前星期几（ 0 - 6）， getDate是获得当前日期
+				var x = new Array("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"); // 规范星期输出格式
+				var h = date.getHours(); // 获取当前时间的时
+				var min = date.getMinutes(); // 获取当前时间的分
+				var s = date.getSeconds(); // 获取当前时间的秒
+				document.getElementById("time").innerHTML = y + "年" + m + "月" + d + "日" + " " + x[date.getDay()] + " " + ((h >
+					12) ? "下午" : "早上 ") + h + ((min < 10) ? ":0" : ":") + min + ((s < 10) ? ":0" : ":") + s;
+			}
+			setInterval("time()", 1000);
+		</script>
+	</body>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/desktop.js"></script>
+	<script src="js/system.js"></script>
+	<script src="js/post.js"></script>
+	<script src="js/alt.js"></script>
+</html>

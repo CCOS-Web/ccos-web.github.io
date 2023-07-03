@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en" class="no-ie" style="overflow:hidden;">
+	<head>
+		<meta charset="utf-8">
+		<title>Settings</title>
+	</head>
+	<style>
+		.table {
+			min-width: 100px;
+			min-height: 50px;
+			height: 100vh;
+			width: 25vw;
+			background-color: rgba(230, 230, 230, 0.5);
+			margin: 0px;
+			float: left;
+			overflow-y: auto;
+			overflow-x: hidden;
+		}
+
+		.list {
+			border-radius: 1px;
+			background-color: rgba(0, 130, 22, 0.3);
+			font-size: 20px;
+			min-width: 100px;
+			min-height: 35px;
+			width: 25vw;
+			height: 50px;
+			vertical-align: middle;
+			text-align: center;
+			margin: 0px;
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+		}
+
+		.centre {
+			vertical-align: middle;
+			text-align: center;
+			margin: 0px;
+		}
+
+		.secc {
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+		}
+
+		.menu img {
+			width: 60px;
+			height: 60px;
+			max-width: 60px;
+			max-height: 60px;
+		}
+
+		.menu.li {
+			margin: 10px;
+		}
+
+		.menu img:hover {
+			transition: 0.3s;
+			transform: scale(1.1);
+		}
+
+		span {
+			border: solid rgba(211, 54, 130, 0.3);
+			background-color: rgba(225, 138, 231, 0.2);
+			border-radius: 5px;
+			padding: 1px;
+		}
+	</style>
+	<script>
+		function inner(s) {
+			item = document.getElementById("main");
+			item.innerHTML = s;
+		}
+	</script>
+	<body style="margin: 0px;background-image: url(../../../desktop/bg.png);" id="body">
+		<!-- <div style="min-height: 5vh;max-height: 5vh;min-width: 100vw;background-color: rgba(0,120,215,1);">
+			<div class="centre" style="font-size: 3vh;color: #FFFFFF;" onclick="javascript:self.close();">Settings</div>
+		</div> -->
+		<div class="table">
+			<div class="list" id="fb">FeedBack</div>
+			<div class="list" id="server">Server</div>
+		</div>
+		<div id="main_"
+			style="overflow-y: auto;overflow-x: hidden;margin: 0px;float: left;min-height: 100vh;max-height: 100vh;width: calc(75vw - 20px);background-color: rgba(230,230,230,1);">
+			<div id="main" style="padding: 10px;">
+
+			</div>
+		</div>
+	</body>
+	<script>
+	if(!localStorage.serverIp)
+		localStorage.setItem("serverIp", "");
+		var HttpClient = function() {
+			this.get = function(aUrl, aCallback) {
+				var anHttpRequest = new XMLHttpRequest();
+				anHttpRequest.onreadystatechange = function() {
+					if (anHttpRequest.readyState == 4 && anHttpRequest.status == 200)
+						aCallback(anHttpRequest.responseText);
+				}
+
+				anHttpRequest.open("GET", aUrl, true);
+				anHttpRequest.send(null);
+			}
+		}
+		document.getElementById("fb").onclick = function() {
+			inner(
+				"E-mail address: <input id='em' AUTOCOMPLETE=\"off\"><br>FeedBack: <input id='f' AUTOCOMPLETE=\"off\"><br><button id='sub'>Submit</button>");
+			document.getElementById("sub").onclick = function() {
+				var client = new HttpClient();
+				client.get(
+					'https://sctapi.ftqq.com/SCT119256T0o7pi2FlHtYEBaZDkxIRzHfB.send?title=CCOS - FeedBack&desp=' +
+					document.getElementById("f").value + ':::::::::::from:' + document.getElementById("em").value,
+					function(response) {
+						// do something with response
+						inner("<font size=10>We get your FeedBack!</font>")
+					});
+			}
+		}
+		document.getElementById("server").onclick = function() {
+			inner(`
+			<h1>Setting</h1>
+			<hr>
+			IP: <div id='server_ip'><input AUTOCOMPLETE='off' id='server_ip_0' style='width: 3ch;'> . <input AUTOCOMPLETE='off' id='server_ip_1' style='width: 3ch;'> . <input AUTOCOMPLETE='off' id='server_ip_2' style='width: 3ch;'> . <input AUTOCOMPLETE='off' id='server_ip_3' style='width: 3ch;'> : <input AUTOCOMPLETE='off' id='server_ip_port' style='width: 5ch;' value="8000"></div>
+			<br>
+			<Button id='ip_sub' onclick='ip_submit(this);'>Submit</Button>
+			<p id='ip_msg'></p>
+			 `);
+			if (localStorage.getItem("serverIp")) {
+				var tmp = localStorage.getItem("serverIp").substring(7, localStorage.getItem("serverIp").length).split(
+					'.');
+				console.log(tmp)
+				document.getElementById('server_ip_0').value = tmp[0];
+				document.getElementById('server_ip_1').value = tmp[1];
+				document.getElementById('server_ip_2').value = tmp[2];
+				document.getElementById('server_ip_3').value = tmp[3].split(':')[0];
+				document.getElementById('server_ip_port').value = tmp[3].split(':')[1];
+				ip_submit(document.getElementById('ip_sub'));
+			}
+		}
+
+		function ip_submit(t) {
+			t.onclick = null;
+			t.innerText = "······";
+			ip0 = document.getElementById('server_ip_0').value;
+			ip1 = document.getElementById('server_ip_1').value;
+			ip2 = document.getElementById('server_ip_2').value;
+			ip3 = document.getElementById('server_ip_3').value;
+			ipp = document.getElementById('server_ip_port').value;
+			var client = new HttpClient();
+			// console.log(`http://${ip0}.${ip1}.${ip2}.${ip3}:${ipp}/main.php?o=c`)
+			try {
+				client.get(
+					`http://${ip0}.${ip1}.${ip2}.${ip3}:${ipp}/main.php?o=c`,
+					function(response) {
+						// do something with response
+						console.log(response)
+						t.innerText = "Submit";
+						if (response == "response:OK.") {
+							document.getElementById("ip_msg").innerText =
+								"Sumbit successfully, aleady be connected to the server.";
+							localStorage.setItem("serverIp", `http://${ip0}.${ip1}.${ip2}.${ip3}:${ipp}`);
+						} else
+							document.getElementById("ip_msg").innerText =
+							"Something wrong, please check the form and the internet.";
+						t.onclick = ip_submit;
+					});
+			} catch (e) {
+				console.log(e)
+			}
+		}
+
+		function desktop_menu_li(val) {
+
+		}
+
+		function d_m_l_add() {
+			parent.window.system("start allapp");
+		}
+		var $_global_desktop_menu_dragid = undefined;
+
+		function dragStart(t) {
+			$_global_desktop_menu_dragid = Number(t.id);
+		}
+
+		function allow(e) {
+			e.preventDefault();
+		}
+
+		function drop(t) {
+			list = JSON.parse(localStorage.getItem("menu")).main;
+			var tmp = list[$_global_desktop_menu_dragid];
+			list[$_global_desktop_menu_dragid] = list[Number(t.id)];
+			list[Number(t.id)] = tmp;
+			var json = {
+				'main': list
+			}
+			localStorage.setItem("menu", JSON.stringify(json));
+			document.getElementById("desktop").onclick();
+		}
+
+		function apply() {
+			parent.window.setMenu();
+		}
+		var loc = window.location.href.split('#:');
+		if (loc.length == 2) {
+			loc = loc[1];
+			document.getElementById(loc).onclick();
+		}
+	</script>
+</html>

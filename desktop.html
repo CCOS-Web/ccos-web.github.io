@@ -86,9 +86,9 @@
 	</style>
 	<script>
 		window.onload = function() {
-			// if(window.top != window.self){
-			//     window.top.location =  window.self.location;
-			// }
+			
+			localStorage.setItem("serverIp", "http://127.0.0.1:8000")
+		
 			menu = localStorage.getItem("menu");
 			if (!menu) {
 				menu =

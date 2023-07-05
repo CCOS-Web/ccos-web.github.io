@@ -110,6 +110,10 @@
 			.gray {
 				color: gray;
 			}
+			
+			.little{
+				font-size: 0.5em;
+			}
 
 			.inline {
 				display: inline-block;
@@ -145,6 +149,11 @@
 				animation: shine 3s ease-in-out infinite;
 				z-index: 10;
 				color: #d4be73 !important;
+			}
+			
+			img.uphoto{
+				max-width: 1em;
+				max-height: 1em;
 			}
 		</style>
 		<div id="red-packet" class="container" onclick="openRP(this)">
@@ -195,9 +204,9 @@
 
 			function send_openRP() {
 				return rpinfo("Best wishes", "6.66", "CNY", "Bernie Huang", "黄瓜", 3, 10, [
-					["黄瓜", "10:12", "6.66"],
-					["Mr.G", "10:10", "5.87"],
-					["Bernie Huang", "10:09", "7.02"]
+					["Person1", "10:12", `${Math.round(Math.random()*100)}￥`, localStorage.upic],
+					["Person2", "10:10", `${Math.round(Math.random()*100)}￥`, localStorage.upic],
+					["Person3", "10:09", `${Math.round(Math.random()*100)}￥`, localStorage.upic]
 				])
 			}
 
@@ -210,10 +219,10 @@
 					var uphoto = x[3];
 					open_list_str += `
 					<div class="open-list block">
-						<img src="${uphoto}" class="uphoto left">
-						<sup class="left">${uname}</sup>
-						<sub class="left">${utime}</sub>
-						<sup class="right">${umoney}</sup>
+						<img src="${uphoto}" class="uphoto left">&nbsp;
+						<span class="left">${uname}</span>&nbsp;
+						<sub class="left gray little">${utime}</sub>&nbsp;
+						<span class="right">${umoney}</span>
 					</div>
 					<br>
 					<hr>
@@ -225,7 +234,7 @@
 				<small>from ${sender}</small>
 				<br>
 				<h1 class="golden inline">${money}</h1><small class="golden inline"><b>${type}</b></small>
-				<small class="gray block">opened ${rp_opened}/${rp_total} red packets.</small>
+				<small class="gray block">${rp_opened}/${rp_total} red packets has been opened.</small>
 				<hr>
 				<div class="list">
 					${open_list_str}

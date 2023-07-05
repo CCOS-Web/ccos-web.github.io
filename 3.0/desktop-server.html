@@ -12,17 +12,23 @@
 	<style>
 		ul,
 		input {
-			undefined margin: 0;
+			margin: 0;
 			padding: 0;
 		}
 
 		#myMenu {
 			undefined list-style: none;
 			width: 150px;
-			border: 1px solid #ccc;
+			text-align: center;
 			border-bottom: none;
 			position: absolute;
 			display: none;
+			min-width: 280px;
+			max-width: 280px;
+			max-height: 290px;
+			border-radius: 10px;
+			background-color: rgba(255, 255, 255, 0.3);
+			backdrop-filter: blur(8px);
 		}
 
 		#myMenu input {
@@ -64,6 +70,29 @@
 			user-select: none;
 		}
 
+		.window_title {
+			background-color: rgba(225, 225, 225, 0.3);
+			backdrop-filter: blur(5px);
+		}
+
+		.nobg>.window_title {
+			background-color: rgba(225, 225, 225, 0.3) !important;
+			backdrop-filter: blur(8px) !important;
+			border-radius: 8px !important;
+		}
+		
+		.nobg>.window_title>font{
+			zoom: 0.7;
+		}
+
+		.nobg>.frame_container {
+			background-color: #00000000 !important;
+		}
+
+		.altbox {
+			backdrop-filter: blur(8px);
+		}
+
 		@keyframes alertIn {
 			from {
 				right: -250px;
@@ -86,31 +115,31 @@
 	</style>
 	<script>
 		window.onload = function() {
-			
+
 			localStorage.setItem("serverIp", "http://127.0.0.1:8000")
-		
+
 			menu = localStorage.getItem("menu");
 			if (!menu) {
 				menu =
-					`{"main": [["icon/settings.png", "addwin('application/settings/settings.html', 'Settings')"],["icon/terminal.png", "addwin('application/terminal/index.html', 'Terminal')"],["icon/store.png", "addwin('application/store/store.html', 'Store')"]]}`;
+					`{"main": [["icon/settings.png", "addwin('application/settings/settings.html', 'Settings')"],["icon/terminal.png", "addwin('application/terminal/index.html', 'Terminal')"],["icon/store.png", "addwin('application/store/store.html', 'Store')"],["icon/gchat.png", "wid='application/gchat/ext/red_packet/RPCover.html';addwin(wid,'G-Chat','nobg');changesize(wid,504,250)"]]}`;
 				localStorage.setItem("menu", menu);
 			}
 			setMenu();
-			
+
 			apps = localStorage.getItem("apps");
 			if (!apps) {
 				apps =
 					`{"main": []}`;
 				localStorage.setItem("apps", apps);
 			}
-			
+
 			desk = localStorage.getItem("desk");
 			if (!desk) {
 				desk =
 					`{"main": []}`;
 				localStorage.setItem("desk", desk);
 			}
-			
+
 			un = localStorage.getItem("uname");
 			if (!un) {
 				un =
@@ -133,8 +162,7 @@
 		<script src="js/desktop.js"></script>
 		<div id="DIV">
 		</div>
-		<ul id="myMenu"
-			style="min-width: 280px;max-width: 280px;max-height: 290px;border-radius: 10px;background-color: rgba(3,166,25,0.5);">
+		<ul id="myMenu">
 			<!-- MAIN DIV FOR START_MENU -->
 			<div id="myMenuRoot"></div>
 			<br><span id="time" style="color: rgb(200,200,200)"></span>
@@ -151,7 +179,7 @@
 					if (res) {
 
 					} else {
-						alt("rgba(250, 0, 0, 0.5)", "Cannot connect to the server, click me open the Settings.",
+						alt("rgba(250, 0, 0, 0.3)", "Cannot connect to the server, click me open the Settings.",
 							"start settings server");
 					}
 				});
@@ -166,8 +194,8 @@
 				event.preventDefault();
 				myMenu.style.display = "block";
 				//获取鼠标视口位置
-				myMenu.style.top = event.clientY - 330 / 2 + "px";
-				myMenu.style.left = event.clientX - 330 / 2 + "px";
+				myMenu.style.top = event.clientY - myMenu.offsetHeight / 2 + "px";
+				myMenu.style.left = event.clientX - myMenu.offsetWidth / 2 + "px";
 			});
 
 			document.addEventListener("click", function(event) {

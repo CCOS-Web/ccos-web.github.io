@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html style="overflow-x: hidden;">
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+		body{
+			background-color: #000000;
+		}
+		input{
+			background-color: #000000;
+			width: calc(100vw - 50px);
+			border: 0;
+			color: #FFFFFF;
+			word-break:break-all;
+			font-size: 15px;
+		}
+		input:focus{
+			outline: #000000;
+		}
+		text{
+			color: #FFFFFF;
+			font-size: 15px;
+		}
+		.S{
+			font-style: italic;
+			color: #008000;
+		}
+		</style>
+	</head>
+	<body><div id="root">
+		<text>CC Terminal : Desktop/ ~</text><br><text class="S">$ </text><input id="cmd" onchange="cmd()">
+	</div></body>
+	<script>
+	window.onload=function(){
+		// document.getElementById('cmd').focus();
+	}
+		function cmd(){
+			var root=document.getElementById("root");
+			var s=root.innerHTML;
+			var ipt="<text>"+document.getElementById("cmd").value+"</text>";
+			run(document.getElementById("cmd").value);
+			s=s.replace("<input id=\"cmd\" onchange=\"cmd()\">", ipt)+"<br><br><text>CC Terminal : Desktop/ ~</text><br><text class=\"S\">$ </text><input id=\"cmd\" onchange=\"cmd()\">";
+			root.innerHTML=s;
+			document.getElementById('cmd').focus();
+		}
+		function run(cmd){
+			cmd=cmd.toLowerCase();
+			var cmdl=cmd.split(" ");
+			var s=cmdl[0];
+			if(s=="addwin"){
+				parent.window.addwin(cmdl[1],cmdl[2]);
+			}else if(s=="exit"){
+				parent.window.closewin("title_application/terminal/index.html");
+			}else if(cmd=="start js-paint"){
+				parent.window.addwin("https://jspaint.app", "JS Paint");
+			}else if(cmd=="start mines"){
+                                parent.window.addwin("https://mines.vercel.app/", "Minesweeper");parent.window.changesize("https://mines.vercel.app/", 463.69, 300);
+			}else if(cmd=="search"){
+                                parent.window.addwin("https://search.vercel.app/","Search");
+			}else if(cmd=="cam"){
+                                parent.window.addwin("https://camera.verbal.app/","Camera");
+			}
+			
+		}
+	</script>
+</html>

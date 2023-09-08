@@ -4,7 +4,8 @@
 <head>
 	<meta charset="utf-8">
 	<title>Settings</title>
-	<script src="https://ccos-web.github.io/3.0/application/store/webapp.js"></script>
+	<!-- <script src="https://ccos-web.github.io/3.0/application/store/webapp.js"></script> -->
+	<script src="webapp.js"></script>  <!-- for local testing -->
 	<script src="../../js/post.js"></script>
 </head>
 <style>
@@ -183,7 +184,7 @@
 	document.getElementById("net").onclick = function () {
 		s = "";
 		for (var i = 0; i < webapp.length; i++) {
-			if (IN([webapp[i][2], `addwin('${webapp[i][1]}', '${webapp[i][0]}'${webapp[i][2] ? (', ' + webapp[i][3]) : ''})`], app.main))
+			if (IN([webapp[i][2], `addwin('${webapp[i][1]}', '${webapp[i][0]}'${webapp[i][3] ? (', ' + webapp[i][3]) : ''})`], app.main))
 				s += `
 						<div class="secc centre insta" id="ins${i}">
 							<img src="${webapp[i][2]}" class="appicon">
@@ -270,6 +271,7 @@
 
 	function addmenu() {
 		var lst = addTo.parentElement.lastElementChild.innerText.split(',');
+		console.log(lst, lst[4])
 		// lst[name, url, icon]
 		if (lst[2].substr(0, 3) == '../')
 			lst[2] = lst[2].replace("../", "application/");
@@ -278,7 +280,7 @@
 		men = localStorage.getItem("menu");
 		men = JSON.parse(men);
 		console.log([lst[2], lst[1]])
-		men.main.push([lst[2], `addwin('${lst[1]}', '${lst[0]}')`]);
+		men.main.push([lst[2], `addwin('${lst[1]}', '${lst[0]}'${lst[4] ? (', ' + lst[4].replaceAll('%COMMENT%', ',')) : ''})`]);
 		localStorage.setItem("menu", JSON.stringify(men));
 		parent.window.location.reload();
 	}

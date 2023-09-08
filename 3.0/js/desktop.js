@@ -42,7 +42,7 @@ function addwindow(id) {
 	activeapp.push(id);
 };
 
-function addwin(url, title, spec) {
+function addwin(url, title, spec, resize) {
 	if(!spec)
 		spec = "";
 	
@@ -199,6 +199,11 @@ function addwin(url, title, spec) {
 	item.appendChild(bd3);
 	root.appendChild(item);
 	addwindow(`title_${url}`);
+
+	if (resize) {
+		resize = resize.split("x");
+		changesize(url, Number(resize[0]), Number(resize[1]));
+	}
 }
 
 function closewin(id) {

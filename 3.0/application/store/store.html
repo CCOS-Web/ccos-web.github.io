@@ -1,169 +1,171 @@
 <!DOCTYPE html>
 <html lang="en" class="no-ie" style="overflow:hidden;">
-	<head>
-		<meta charset="utf-8">
-		<title>Settings</title>
-		<script src="https://ccos-web.github.io/3.0/application/store/webapp.js"></script>
-		<script src="../../js/post.js"></script>
-	</head>
-	<style>
-		.table {
-			min-width: 100px;
-			min-height: 50px;
-			height: 100vh;
-			width: 25vw;
-			background-color: rgba(230, 230, 230, 0.5);
-			margin: 0px;
-			float: left;
-			overflow-y: auto;
-			overflow-x: hidden;
-		}
 
-		.list {
-			border-radius: 1px;
-			background-color: rgba(0, 130, 22, 0.3);
-			font-size: 20px;
-			min-width: 100px;
-			min-height: 35px;
-			width: 25vw;
-			height: 50px;
-			vertical-align: middle;
-			text-align: center;
-			margin: 0px;
-			-webkit-touch-callout: none;
-			-webkit-user-select: none;
-			-moz-user-select: none;
-			-ms-user-select: none;
-			user-select: none;
-		}
+<head>
+	<meta charset="utf-8">
+	<title>Settings</title>
+	<script src="https://ccos-web.github.io/3.0/application/store/webapp.js"></script>
+	<script src="../../js/post.js"></script>
+</head>
+<style>
+	.table {
+		min-width: 100px;
+		min-height: 50px;
+		height: 100vh;
+		width: 25vw;
+		background-color: rgba(230, 230, 230, 0.5);
+		margin: 0px;
+		float: left;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
 
-		.centre {
-			vertical-align: middle;
-			text-align: center;
-			margin: 0px;
-		}
+	.list {
+		border-radius: 1px;
+		background-color: rgba(0, 130, 22, 0.3);
+		font-size: 20px;
+		min-width: 100px;
+		min-height: 35px;
+		width: 25vw;
+		height: 50px;
+		vertical-align: middle;
+		text-align: center;
+		margin: 0px;
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
 
-		.secc {
-			-webkit-touch-callout: none;
-			-webkit-user-select: none;
-			-moz-user-select: none;
-			-ms-user-select: none;
-			user-select: none;
-		}
+	.centre {
+		vertical-align: middle;
+		text-align: center;
+		margin: 0px;
+	}
 
-		.menu img {
-			width: 60px;
-			height: 60px;
-			max-width: 60px;
-			max-height: 60px;
-		}
+	.secc {
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
 
-		.appicon {
-			width: 60px;
-			height: 60px;
-			max-width: 60px;
-			max-height: 60px;
-		}
+	.menu img {
+		width: 60px;
+		height: 60px;
+		max-width: 60px;
+		max-height: 60px;
+	}
 
-		.menu.li {
-			margin: 10px;
-		}
+	.appicon {
+		width: 60px;
+		height: 60px;
+		max-width: 60px;
+		max-height: 60px;
+	}
 
-		.menu img:hover {
-			transition: 0.3s;
-			transform: scale(1.1);
-		}
+	.menu.li {
+		margin: 10px;
+	}
 
-		.im span {
-			border: solid rgba(211, 54, 130, 0.3);
-			background-color: rgba(225, 138, 231, 0.2);
-			border-radius: 5px;
-			padding: 1px;
-		}
+	.menu img:hover {
+		transition: 0.3s;
+		transform: scale(1.1);
+	}
 
-		.inst {
-			border: 0;
-			background-color: rgb(85, 170, 0);
-			border-radius: 3px;
-			box-shadow: 0 2px 0 #366d50;
-		}
+	.im span {
+		border: solid rgba(211, 54, 130, 0.3);
+		background-color: rgba(225, 138, 231, 0.2);
+		border-radius: 5px;
+		padding: 1px;
+	}
 
-		.uinst {
-			border: 0;
-			background-color: rgb(255, 105, 92);
-			border-radius: 3px;
-			box-shadow: 0 2px 0 #950000;
-		}
+	.inst {
+		border: 0;
+		background-color: rgb(85, 170, 0);
+		border-radius: 3px;
+		box-shadow: 0 2px 0 #366d50;
+	}
 
-		.insta {
-			margin: 10px;
-			float: left;
-		}
+	.uinst {
+		border: 0;
+		background-color: rgb(255, 105, 92);
+		border-radius: 3px;
+		box-shadow: 0 2px 0 #950000;
+	}
 
-		.adto {
-			position: absolute;
-			display: none;
-			width: 7ch;
-			text-align: center;
-			padding: 1ch;
-			background-color: #b8d0d2;
-			font-size: 1ch;
-			border-radius: 3px;
-		}
-		
-		hr{
-			color: white;
-			border: 0.5px solid white;
-		}
-	</style>
-	<script>
-		function inner(s) {
-			item = document.getElementById("main");
-			item.innerHTML = s;
-		}
-	</script>
-	<body style="margin: 0px;" id="body">
-		<!-- <div style="min-height: 5vh;max-height: 5vh;min-width: 100vw;background-color: rgba(0,120,215,1);">
+	.insta {
+		margin: 10px;
+		float: left;
+	}
+
+	.adto {
+		position: absolute;
+		display: none;
+		width: 7ch;
+		text-align: center;
+		padding: 1ch;
+		background-color: #b8d0d2;
+		font-size: 1ch;
+		border-radius: 3px;
+	}
+
+	hr {
+		color: white;
+		border: 0.5px solid white;
+	}
+</style>
+<script>
+	function inner(s) {
+		item = document.getElementById("main");
+		item.innerHTML = s;
+	}
+</script>
+
+<body style="margin: 0px;" id="body">
+	<!-- <div style="min-height: 5vh;max-height: 5vh;min-width: 100vw;background-color: rgba(0,120,215,1);">
 			<div class="centre" style="font-size: 3vh;color: #FFFFFF;" onclick="javascript:self.close();">Settings</div>
 		</div> -->
-		<div class="table">
-			<div class="list" id="my">All App</div>
-			<div class="list" id="net">Install</div>
+	<div class="table">
+		<div class="list" id="my">All App</div>
+		<div class="list" id="net">Install</div>
+	</div>
+	<div id="main_"
+		style="overflow-y: auto;overflow-x: hidden;margin: 0px;float: right;min-height: 100vh;max-height: 100vh;min-width: 75vw;max-width: 75vw;background-color: rgba(230,230,230,1);">
+		<div id="main" style="padding: 10px;">
+
 		</div>
-		<div id="main_"
-			style="overflow-y: auto;overflow-x: hidden;margin: 0px;float: right;min-height: 100vh;max-height: 100vh;min-width: 75vw;max-width: 75vw;background-color: rgba(230,230,230,1);">
-			<div id="main" style="padding: 10px;">
+	</div>
+</body>
+<script>
+	app = JSON.parse(localStorage.getItem("apps"));
+	ins_menu = JSON.parse(localStorage.getItem("menu"));
+	ins_desk = JSON.parse(localStorage.getItem("desk"));
+	addTo = null;
 
-			</div>
-		</div>
-	</body>
-	<script>
-		app = JSON.parse(localStorage.getItem("apps"));
-		ins_menu = JSON.parse(localStorage.getItem("menu"));
-		ins_desk = JSON.parse(localStorage.getItem("desk"));
-		addTo = null;
-
-		var HttpClient = function() {
-			this.get = function(aUrl, aCallback) {
-				var anHttpRequest = new XMLHttpRequest();
-				anHttpRequest.onreadystatechange = function() {
-					if (anHttpRequest.readyState == 4 && anHttpRequest.status == 200)
-						aCallback(anHttpRequest.responseText);
-				}
-
-				anHttpRequest.open("GET", aUrl, true);
-				anHttpRequest.send(null);
+	var HttpClient = function () {
+		this.get = function (aUrl, aCallback) {
+			var anHttpRequest = new XMLHttpRequest();
+			anHttpRequest.onreadystatechange = function () {
+				if (anHttpRequest.readyState == 4 && anHttpRequest.status == 200)
+					aCallback(anHttpRequest.responseText);
 			}
+
+			anHttpRequest.open("GET", aUrl, true);
+			anHttpRequest.send(null);
 		}
-		document.getElementById("my").onclick = function() {
-			s = `<div id='adto' class='adto' onmouseleave="adtoh(this)">
+	}
+	document.getElementById("my").onclick = function () {
+		s = `<div id='adto' class='adto' onmouseleave="adtoh(this)">
 			<div id='adto1' onclick='addmenu()'>MENU</div>
 			<hr>
 			<div id='adto2' onclick='addtop()'>Desktop</div>
 			</div>`;
-			for (var i = 0; i < webapp.length; i++) {
-				if (IN([webapp[i][2], `addwin('${webapp[i][1]}', '${webapp[i][0]}')`], app.main))
-					s += `
+		for (var i = 0; i < webapp.length; i++) {
+			if (IN([webapp[i][2], `addwin('${webapp[i][1]}', '${webapp[i][0]}')`], app.main))
+				s += `
 						<div class="secc centre insta">
 							<img src="${webapp[i][2]}" class="appicon" onclick="parent.window.addwin('${webapp[i][1]}', '${webapp[i][0]}')">
 							<br>
@@ -174,15 +176,15 @@
 							<div Style='display: none;'>${webapp[i]}</div>
 						</div>
 						`
-			}
-			inner(s);
 		}
+		inner(s);
+	}
 
-		document.getElementById("net").onclick = function() {
-			s = "";
-			for (var i = 0; i < webapp.length; i++) {
-				if (IN([webapp[i][2], `addwin('${webapp[i][1]}', '${webapp[i][0]}')`], app.main))
-					s += `
+	document.getElementById("net").onclick = function () {
+		s = "";
+		for (var i = 0; i < webapp.length; i++) {
+			if (IN([webapp[i][2], `addwin('${webapp[i][1]}', '${webapp[i][0]}'${webapp[i][2] ? (', ' + webapp[i][3]) : ''})`], app.main))
+				s += `
 						<div class="secc centre insta" id="ins${i}">
 							<img src="${webapp[i][2]}" class="appicon">
 							<br>
@@ -191,8 +193,8 @@
 							<button class='uinst' onclick="uninstall('web', '${webapp[i][0]}', '${webapp[i][1]}', '${webapp[i][2]}', '${webapp[i][3]}');">Uninstall</button>
 						</div>
 						`
-				else
-					s += `
+			else
+				s += `
 						<div class="secc centre insta" id="ins${i}">
 							<img src="${webapp[i][2]}" class="appicon">
 							<br>
@@ -201,104 +203,105 @@
 							<button class='inst' onclick="install('web', '${webapp[i][0]}', '${webapp[i][1]}', '${webapp[i][2]}', '${webapp[i][3]}');">Install</button>
 						</div>
 						`
-			}
-			inner(s);
 		}
+		inner(s);
+	}
 
-		function install(mode, name, url, icon, web) {
-			app.main.push([icon, `addwin('${url}', '${name}')`]);
-			localStorage.setItem("apps", JSON.stringify(app));
-			if(web){
-				var downloadPath=url;
-				console.log(web, downloadPath)
-				serverDownload(web, downloadPath);
-			}
-			if (window.location.href.substr(window.location.href.length - 4, 4) != "#:net")
-				window.location.href += "#:net"
-			location.reload();
+	function install(mode, name, url, icon, web) {
+		app.main.push([icon, `addwin('${url}', '${name}')`]);
+		localStorage.setItem("apps", JSON.stringify(app));
+		if (web) {
+			var downloadPath = url;
+			console.log(web, downloadPath)
+			serverDownload(web, downloadPath);
 		}
+		if (window.location.href.substr(window.location.href.length - 4, 4) != "#:net")
+			window.location.href += "#:net"
+		location.reload();
+	}
 
-		function uninstall(mode, name, url, icon) {
-			for (var i = 0; i < app.main.length; i++) {
-				var node = app.main[i];
-				if (node.toString() == [icon, `addwin('${url}', '${name}')`].toString())
-					app.main.splice(i, 1);
-			}
-			for (var i = 0; i < ins_menu.main.length; i++) {
-				var node = ins_menu.main[i];
-				if (node.toString() == [icon.replace("../", "application/"), `addwin('${url.replace("../", "application/")}', '${name}')`].toString())
-					ins_menu.main.splice(i, 1);
-			}
-			for (var i = 0; i < ins_desk.main.length; i++) {
-				var node = ins_desk.main[i];
-				if (node.toString() == [icon, `addwin('${url}', '${name}')`].toString())
-					ins_desk.main.splice(i, 1);
-			}
-			localStorage.setItem("apps", JSON.stringify(app));
-			localStorage.setItem("menu", JSON.stringify(ins_menu));
-			localStorage.setItem("desk", JSON.stringify(ins_desk));
-			if (window.location.href.substr(window.location.href.length - 4, 4) != "#:net")
-				window.location.href += "#:net"
-			location.reload();
+	function uninstall(mode, name, url, icon) {
+		for (var i = 0; i < app.main.length; i++) {
+			var node = app.main[i];
+			if (node.toString() == [icon, `addwin('${url}', '${name}')`].toString())
+				app.main.splice(i, 1);
 		}
+		for (var i = 0; i < ins_menu.main.length; i++) {
+			var node = ins_menu.main[i];
+			if (node.toString() == [icon.replace("../", "application/"), `addwin('${url.replace("../", "application/")}', '${name}')`].toString())
+				ins_menu.main.splice(i, 1);
+		}
+		for (var i = 0; i < ins_desk.main.length; i++) {
+			var node = ins_desk.main[i];
+			if (node.toString() == [icon, `addwin('${url}', '${name}')`].toString())
+				ins_desk.main.splice(i, 1);
+		}
+		localStorage.setItem("apps", JSON.stringify(app));
+		localStorage.setItem("menu", JSON.stringify(ins_menu));
+		localStorage.setItem("desk", JSON.stringify(ins_desk));
+		if (window.location.href.substr(window.location.href.length - 4, 4) != "#:net")
+			window.location.href += "#:net"
+		location.reload();
+	}
 
-		function IN(item, li) {
-			rt = false;
-			li.forEach(it => {
-				if (it.toString() == item.toString())
-					rt = true;
-			})
-			return rt;
-		}
+	function IN(item, li) {
+		rt = false;
+		li.forEach(it => {
+			if (it.toString() == item.toString())
+				rt = true;
+		})
+		return rt;
+	}
 
-		function adto(t) {
-			var box = document.getElementById("adto");
-			var pos = t.getBoundingClientRect();
-			box.style.display = "block";
-			box.style.left = String(pos.left)+"px";
-			box.style.top = String(pos.top)+"px";
-			addTo=t;
-		}
+	function adto(t) {
+		var box = document.getElementById("adto");
+		var pos = t.getBoundingClientRect();
+		box.style.display = "block";
+		box.style.left = String(pos.left) + "px";
+		box.style.top = String(pos.top) + "px";
+		addTo = t;
+	}
 
-		function adtoh(t) {
-			addTo=null;
-			var box = document.getElementById("adto");
-			box.style.display = "none";
-		}
-		
-		function addmenu(){
-			var lst=addTo.parentElement.lastElementChild.innerText.split(',');
-			// lst[name, url, icon]
-			if(lst[2].substr(0, 3)=='../')
-				lst[2]=lst[2].replace("../", "application/");
-			if(lst[1].substr(0, 3)=='../')
-				lst[1]=lst[1].replace("../", "application/");
-			men=localStorage.getItem("menu");
-			men = JSON.parse(men);
-			console.log([lst[2],lst[1]])
-			men.main.push([lst[2],`addwin('${lst[1]}', '${lst[0]}')`]);
-			localStorage.setItem("menu", JSON.stringify(men));
-			parent.window.location.reload();
-		}
-		
-		function addtop(){
-			var lst=addTo.parentElement.lastElementChild.innerText.split(',');
-			// lst[name, url, icon]
-			if(lst[2].substr(0, 3)=='../')
-				lst[2]=lst[2].replace("../", "application/");
-			if(lst[1].substr(0, 3)=='../')
-				lst[1]=lst[1].replace("../", "application/");
-			desk=localStorage.getItem("desk");
-			desk = JSON.parse(desk);
-			console.log([lst[2],lst[1]])
-			desk.main.push([lst[2], `addwin('${lst[1]}', '${lst[0]}')`]);
-			localStorage.setItem("desk", JSON.stringify(desk));
-		}
+	function adtoh(t) {
+		addTo = null;
+		var box = document.getElementById("adto");
+		box.style.display = "none";
+	}
+
+	function addmenu() {
+		var lst = addTo.parentElement.lastElementChild.innerText.split(',');
+		// lst[name, url, icon]
+		if (lst[2].substr(0, 3) == '../')
+			lst[2] = lst[2].replace("../", "application/");
+		if (lst[1].substr(0, 3) == '../')
+			lst[1] = lst[1].replace("../", "application/");
+		men = localStorage.getItem("menu");
+		men = JSON.parse(men);
+		console.log([lst[2], lst[1]])
+		men.main.push([lst[2], `addwin('${lst[1]}', '${lst[0]}')`]);
+		localStorage.setItem("menu", JSON.stringify(men));
+		parent.window.location.reload();
+	}
+
+	function addtop() {
+		var lst = addTo.parentElement.lastElementChild.innerText.split(',');
+		// lst[name, url, icon]
+		if (lst[2].substr(0, 3) == '../')
+			lst[2] = lst[2].replace("../", "application/");
+		if (lst[1].substr(0, 3) == '../')
+			lst[1] = lst[1].replace("../", "application/");
+		desk = localStorage.getItem("desk");
+		desk = JSON.parse(desk);
+		console.log([lst[2], lst[1]])
+		desk.main.push([lst[2], `addwin('${lst[1]}', '${lst[0]}')`]);
+		localStorage.setItem("desk", JSON.stringify(desk));
+	}
 
 
-		var sele = window.location.href.split('#:')[window.location.href.split('#:').length - 1];
-		sele = document.getElementById(sele);
-		if (sele)
-			sele.onclick();
-	</script>
+	var sele = window.location.href.split('#:')[window.location.href.split('#:').length - 1];
+	sele = document.getElementById(sele);
+	if (sele)
+		sele.onclick();
+</script>
+
 </html>
